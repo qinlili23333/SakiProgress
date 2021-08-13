@@ -7,7 +7,7 @@ var SakiProgress = {
     init: function (color) {
         if (!this.isLoaded) {
             this.isLoaded = true;
-            console.info("SakiProgress Initializing!\nVersion:1.0.0\nQinlili Tech:Github@qinlili23333");
+            console.info("SakiProgress Initializing!\nVersion:1.0.1\nQinlili Tech:Github@qinlili23333");
             this.pgDiv = document.createElement("div");
             this.pgDiv.id = "pgdiv";
             this.pgDiv.style = "z-index:9999;position:fixed;background-color:white;min-height:32px;width:auto;height:32px;left:0px;right:0px;top:0px;box-shadow:0px 2px 2px 1px rgba(0, 0, 0, 0.5);transition:opacity 0.5s;display:none;";
@@ -60,8 +60,8 @@ var SakiProgress = {
     showDiv: function () {
         if (this.pgDiv) {
             this.pgDiv.style.display = "";
-            setTimeout(function () { SakiProgress.pgDiv.style.opacity = 1;},10);
-            this.first.style.marginTop = (this.pgDiv.clientHeight + 10) + "px";
+            setTimeout(function () { SakiProgress.pgDiv.style.opacity = 1; }, 10);
+            this.first.style.marginTop = (this.pgDiv.clientHeight + 8) + "px";
         }
         else {
             console.error("Not Initialized Error-Please Call `init` First!");
@@ -74,5 +74,14 @@ var SakiProgress = {
         else {
             console.error("Not Initialized Error-Please Call `init` First!");
         }
+    },
+    destroy: function () {
+        document.body.removeChild(this.pgDiv);
+        this.isLoaded = false;
+        this.progres = false;
+        this.pgDiv = false;
+        this.textSpan = false;
+        this.first = false;
+        console.info("SakiProgress Destroyed!You Can Reload Later!");
     }
 }
