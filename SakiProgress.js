@@ -4,10 +4,11 @@ var SakiProgress = {
     pgDiv: false,
     textSpan: false,
     first: false,
+    alertMode: false,
     init: function (color) {
         if (!this.isLoaded) {
             this.isLoaded = true;
-            console.info("SakiProgress Initializing!\nVersion:1.0.2\nQinlili Tech:Github@qinlili23333");
+            console.info("SakiProgress Initializing!\nVersion:1.0.3\nQinlili Tech:Github@qinlili23333");
             this.pgDiv = document.createElement("div");
             this.pgDiv.id = "pgdiv";
             this.pgDiv.style = "z-index:9999;position:fixed;background-color:white;min-height:32px;width:auto;height:32px;left:0px;right:0px;top:0px;box-shadow:0px 2px 2px 1px rgba(0, 0, 0, 0.5);transition:opacity 0.5s;display:none;";
@@ -17,13 +18,13 @@ var SakiProgress = {
             this.first.style.transition = "margin-top 0.5s"
             this.progress = document.createElement("div");
             this.progress.id = "dlprogress"
-            this.progress.style = "position: absolute;top: 0;bottom: 0;left: 0;background-color: #F17C67;z-index: -1;width:0%;transition: width 1s ease-in-out,opacity 0.25s,background-color 1s;"
+            this.progress.style = "position: absolute;top: 0;bottom: 0;left: 0;background-color: #F17C67;z-index: -1;width:0%;transition: width 0.25s ease-in-out,opacity 0.25s,background-color 1s;"
             if (color) {
                 this.setColor(color);
             }
             this.pgDiv.appendChild(this.progress);
             this.textSpan = document.createElement("span");
-            this.textSpan.style = "height:32px;padding:4px;font-size:24px;";
+            this.textSpan.style = "padding-left:4px;font-size:24px;";
             this.textSpan.style.display = "inline-block"
             this.pgDiv.appendChild(this.textSpan);
             var css = ".barBtn:hover{ background-color: #cccccc }.barBtn:active{ background-color: #999999 }";
@@ -34,6 +35,7 @@ var SakiProgress = {
                 style.appendChild(document.createTextNode(css));
             }
             document.getElementsByTagName('head')[0].appendChild(style);
+            console.info("SakiProgress Initialized!");
         } else {
             console.error("Multi Instance Error-SakiProgress Already Loaded!");
         }
@@ -60,18 +62,28 @@ var SakiProgress = {
         if (this.progress) {
             this.progress.style.opacity = 0;
             setTimeout(function () { SakiProgress.progress.style.width = "0%"; }, 500);
-            setTimeout(function () { SakiProgress.progress.style.opacity = 1; }, 1500);
+            setTimeout(function () { SakiProgress.progress.style.opacity = 1; }, 750);
         } else {
             console.error("Not Initialized Error-Please Call `init` First!")
         }
     },
     hideDiv: function () {
         if (this.pgDiv) {
-            this.pgDiv.style.opacity = 0;
-            this.first.style.marginTop = "";
-            setTimeout(function () {
-                SakiProgress.pgDiv.style.display = "none";
-            }, 500);
+            if (this.alertMode) {
+                setTimeout(function () {
+                    SakiProgress.pgDiv.style.opacity = 0;
+                    SakiProgress.first.style.marginTop = "";
+                    setTimeout(function () {
+                        SakiProgress.pgDiv.style.display = "none";
+                    }, 500);
+                }, 3000);
+            } else {
+                this.pgDiv.style.opacity = 0;
+                this.first.style.marginTop = "";
+                setTimeout(function () {
+                    SakiProgress.pgDiv.style.display = "none";
+                }, 500);
+            }
         }
         else {
             console.error("Not Initialized Error-Please Call `init` First!");
@@ -89,7 +101,25 @@ var SakiProgress = {
     },
     setText: function (text) {
         if (this.textSpan) {
+            if (this.alertMode) {
+                setTimeout(function () {
+                    if (!SakiProgress.alertMode) {
+                        SakiProgress.textSpan.innerText = text;
+                    }
+                }, 3000);
+            } else {
+                this.textSpan.innerText = text;
+            }
+        }
+        else {
+            console.error("Not Initialized Error-Please Call `init` First!");
+        }
+    },
+    setTextAlert: function (text) {
+        if (this.textSpan) {
             this.textSpan.innerText = text;
+            this.alertMode = true;
+            setTimeout(function () { this.alertMode = false; }, 3000);
         }
         else {
             console.error("Not Initialized Error-Please Call `init` First!");
