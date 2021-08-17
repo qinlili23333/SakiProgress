@@ -8,11 +8,14 @@ var SakiProgress = {
     init: function (color) {
         if (!this.isLoaded) {
             this.isLoaded = true;
-            console.info("SakiProgress Initializing!\nVersion:1.0.3\nQinlili Tech:Github@qinlili23333");
+            console.info("SakiProgress Initializing!\nVersion:1.0.4\nQinlili Tech:Github@qinlili23333");
             this.pgDiv = document.createElement("div");
             this.pgDiv.id = "pgdiv";
             this.pgDiv.style = "z-index:9999;position:fixed;background-color:white;min-height:32px;width:auto;height:32px;left:0px;right:0px;top:0px;box-shadow:0px 2px 2px 1px rgba(0, 0, 0, 0.5);transition:opacity 0.5s;display:none;";
             this.pgDiv.style.opacity = 0;
+            if(getMaxZIndex()>=9999){
+                this.pgDiv.style.zIndex=getMaxZIndex()+1;
+            }
             this.first = document.body.firstElementChild;
             document.body.insertBefore(this.pgDiv, this.first);
             this.first.style.transition = "margin-top 0.5s"
@@ -39,6 +42,10 @@ var SakiProgress = {
         } else {
             console.error("Multi Instance Error-SakiProgress Already Loaded!");
         }
+        function getMaxZIndex(){
+            let arr = [...document.all].map(e => +window.getComputedStyle(e).zIndex || 0);
+            return arr.length ? Math.max(...arr) + 1 : 0
+           }
     },
     destroy: function () {
         if (this.pgDiv) {
